@@ -101,10 +101,10 @@ class SafeProcessMap final
     /// as already terminated.
     /// In the case of a clash due to PID re-use, this method yields until the situation is resolved.
     /// @param key The process ID to look for in the map.
-    /// @return 0 if the process ID was found and the registered callback was notified with `status`,
-    ///         1 if the process ID was not found and an already-terminated entry was inserted,
-    ///         -1 if an error occurred during insertion (e.g., out of memory),
-    ///         or -2 if the provided process ID (`key`) is not valid (< 0).
+    /// @return kOk if the process ID was found and the registered callback was notified with `status`,
+    ///         kYield if the process ID was not found and an already-terminated entry was inserted,
+    ///         kInsertionError if an error occurred during insertion (e.g., out of memory),
+    ///         or kInvalidIdError if the provided process ID (`key`) is not valid (< 0).
     SafeProcessMapReturnType findTerminated(osal::ProcessID key, int32_t status);
 
     /// @brief Inserts a process into the map if it has not already terminated.
@@ -114,10 +114,10 @@ class SafeProcessMap final
     /// resolved.
     /// @param key The process ID to insert into the map.
     /// @param object A pointer to the ITerminationCallback associated with the process.
-    /// @return 0 if the key (Process ID) was not found and a new entry was made,
-    ///         1 if the key was found (indicating the process has terminated), and updated with the provided object,
-    ///         -1 if an error occurred during insertion (e.g., out of memory),
-    ///         or -2 if the provided process ID (`key`) is not valid ( < 0).
+    /// @return kOk if the key (Process ID) was not found and a new entry was made,
+    ///         kYield if the key was found (indicating the process has terminated), and updated with the provided
+    ///         object, kInsertionError if an error occurred during insertion (e.g., out of memory), or kInvalidIdError
+    ///         if the provided process ID (`key`) is not valid ( < 0).
     SafeProcessMapReturnType insertIfNotTerminated(osal::ProcessID key, ITerminationCallback* object);
 
   private:
